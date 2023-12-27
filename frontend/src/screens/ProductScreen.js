@@ -91,7 +91,8 @@ function ProductScreen() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfo } = state;
   const addToCartHandler = async () => {
-    const existItem = cart.cartItems.find((x) => x._id === product._id);
+    // const existItem = cart.cartItems.find((x) => x._id === product._id);
+    const existItem = cart.cartItems.find((x) => x._id === product._id && x.variant === selectedVariant);
     const quantity = existItem ? existItem.quantity + 1 : 1;
     const { data } = await axios.get(`/api/products/${product._id}`);
     if (data.countInStock < quantity) {
@@ -100,7 +101,7 @@ function ProductScreen() {
     }
     ctxDispatch({
       type: 'CART_ADD_ITEM',
-      payload: { ...product, quantity },
+      payload: { ...product, quantity, variant: selectedVariant },
     });
     // navigate('/cart');
     toast.success('Added to cart');
@@ -141,7 +142,11 @@ function ProductScreen() {
 
   };
   
+  const [selectedVariant, setSelectedVariant] = useState(null);
 
+  const handleVariantClick = (variant) => {
+    setSelectedVariant((prevVariant) => (prevVariant === variant ? null : variant));
+  };
 
   const [liked, setLiked] = useState(false);
 
@@ -184,8 +189,25 @@ function ProductScreen() {
               <h3>{product.name}</h3>
             </ListGroup.Item>
             <ListGroup.Item>
-              Price : <span class={product.salePrice > 0 ? 'text-decoration-line-through': ''}>₱ {product.price}</span>
-              <span class="text-danger" style={{marginLeft: '15px'}}>{product.salePrice > 0 ?  '₱' + product.salePrice : ''}</span>
+              Price : <span className={product.salePrice > 0 ? 'text-decoration-line-through': ''}>₱ {product.price}</span>
+              <span className="text-danger" style={{marginLeft: '15px'}}>{product.salePrice > 0 ?  '₱' + product.salePrice : ''}</span>
+            </ListGroup.Item>
+            <ListGroup.Item>
+              {product.variant.length > 0 && (
+                <>
+                  <p>Available Variants:</p>
+                  {product.variant.map((variant, index) => (
+                    <Button
+                      key={index}
+                      variant={selectedVariant === variant ? 'secondary' : 'primary'}
+                      onClick={() => handleVariantClick(variant)}
+                    >
+                      {variant}
+                    </Button>
+                  ))}
+                  <p>Selected Variant: <span className="text-danger">{selectedVariant}</span></p>
+                </>
+              )}
             </ListGroup.Item>
             <ListGroup.Item>
               <Row xs={1} md={2} className="g-2">
@@ -219,8 +241,8 @@ function ProductScreen() {
                   <Row>
                     <Col>Price:</Col>
                     <Col>
-                    <span class={product.salePrice > 0 ? 'text-decoration-line-through': ''}>₱ {product.price}</span>
-                    <span class="text-danger" style={{marginLeft: '15px'}}>{product.salePrice > 0 ?  '₱' + product.salePrice : ''}</span>
+                    <span className={product.salePrice > 0 ? 'text-decoration-line-through': ''}>₱ {product.price}</span>
+                    <span className="text-danger" style={{marginLeft: '15px'}}>{product.salePrice > 0 ?  '₱' + product.salePrice : ''}</span>
                     </Col>
                   </Row>
                 </ListGroup.Item>

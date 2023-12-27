@@ -237,13 +237,18 @@ export default function OrderScreen() {
                 {order.orderItems.map((item) => (
                   <ListGroup.Item key={item._id}>
                     <Row className="align-items-center">
-                      <Col md={8}>
+                      <Col md={6}>
                         <img
                           src={item.image}
                           alt={item.name}
                           className="img-fluid rounded img-thumbnail"
                         ></img>{' '}
                         <Link to={`/product/${item.slug}`}>{item.name}</Link>
+                      </Col>
+                      <Col md={2}>
+                        <Badge bg="light" text="dark">
+                          {item.variant}
+                        </Badge>
                       </Col>
                       <Col md={2}>
                         <span>{item.quantity}</span>

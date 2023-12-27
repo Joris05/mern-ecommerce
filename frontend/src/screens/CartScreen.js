@@ -9,6 +9,7 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Badge from 'react-bootstrap/Badge';
 
 export default function CartScreen() {
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ export default function CartScreen() {
       </Helmet>
       <h1>Shopping Cart</h1>
       <Row>
-        <Col md={8}>
+        <Col md={9}>
           {cartItems.length === 0 ? (
             <MessageBox>
               Cart is empty. <Link to="/">Go Shopping</Link>
@@ -53,13 +54,18 @@ export default function CartScreen() {
               {cartItems.map((item) => (
                 <ListGroup.Item key={item._id}>
                   <Row className="align-items-center">
-                    <Col md={7}>
+                    <Col md={5}>
                       <img
                         src={item.image}
                         alt={item.name}
                         className="img-fluid rounded img-thumbnail"
                       ></img>{' '}
                       <Link to={`/product/${item.slug}`} style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'normal' }}>{item.name}</Link>
+                    </Col>
+                    <Col md={2}>
+                      <Badge bg="light" text="dark">
+                        {item.variant}
+                      </Badge>
                     </Col>
                     <Col md={2}>
                       <Button
@@ -100,14 +106,14 @@ export default function CartScreen() {
             </ListGroup>
           )}
         </Col>
-        <Col md={4}>
+        <Col md={3}>
           <Card>
             <Card.Body>
               <ListGroup variant="flush">
                 <ListGroup.Item>
                   <h3>
                     Subtotal ({cartItems.reduce((a, c) => a + c.quantity, 0)}{' '}
-                    items) : ₱
+                    items) ₱
                     {
                       cartItems.reduce(
                         (a, c) => a + (c.salePrice > 0 ? c.salePrice * c.quantity : c.price * c.quantity), 0

@@ -9,7 +9,7 @@ const reviewSchema = new mongoose.Schema(
   {
     timestamps: true,
   }
-);
+);  
 
 const productSchema = new mongoose.Schema(
   {
@@ -26,6 +26,7 @@ const productSchema = new mongoose.Schema(
     rating: { type: Number, required: true },
     numReviews: { type: Number, required: true },
     reviews: [reviewSchema],
+    variant: [String]
   },
   {
     timestamps: true,

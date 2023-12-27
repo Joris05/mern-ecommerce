@@ -45,12 +45,20 @@ productRouter.put(
       product.slug = req.body.slug;
       product.price = req.body.price;
       product.salePrice = req.body.salePrice;
-      product.image = req.body.image;
-      product.images = req.body.images;
+      // product.image = req.body.image;
+      // product.images = req.body.images;
       product.category = req.body.category;
       product.brand = req.body.brand;
       product.countInStock = req.body.countInStock;
       product.description = req.body.description;
+
+      if(req.body.variant != ''){
+        const variantString = req.body.variant;
+  
+        const variantsArray = variantString.split(',').map(variant => variant.trim());
+        product.variant = variantsArray;
+      }
+      
       await product.save();
       res.send({ message: 'Product Updated' });
     } else {

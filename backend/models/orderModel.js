@@ -10,6 +10,7 @@ const orderSchema = new mongoose.Schema(
         image: { type: String, required: true },
         price: { type: Number, required: true },
         salePrice: { type: Number, required: true },
+        variant: { type: String },
         product: {
           type: mongoose.Schema.Types.ObjectId,
           ref: 'Product',

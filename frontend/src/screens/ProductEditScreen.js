@@ -80,7 +80,9 @@ export default function ProductEditScreen() {
         setCategory(data.category);
         setCountInStock(data.countInStock);
         setBrand(data.brand);
+        setVariant(data.variant);
         setDescription(data.description);
+        setVariant(data.variant.join(','));
         dispatch({ type: 'FETCH_SUCCESS' });
       } catch (err) {
         dispatch({
@@ -104,6 +106,7 @@ export default function ProductEditScreen() {
           slug,
           price,
           salePrice,
+          variant,
           image,
           images,
           category,
@@ -214,7 +217,6 @@ export default function ProductEditScreen() {
             <Form.Control
               value={variant}
               onChange={(e) => setVariant(e.target.value)}
-              required
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="image">
